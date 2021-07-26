@@ -65,5 +65,7 @@ typings/
 .vscode/*
 
 /*.js
+!/gatsby-node.js
+!/nodes.js
 yarn.lock
 .DS_STORE
