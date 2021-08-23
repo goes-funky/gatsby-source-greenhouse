@@ -113,11 +113,14 @@ function flattenJobPosts(jobs, jobPosts) {
   return flattenedJobPosts.filter((jobPost) => jobPost !== undefined)
 }
 
-exports.sourceNodes = async ({ actions }, { apiToken, pluginOptions }) => {
+exports.sourceNodes = async ({ actions, reporter, parentSpan }, { apiToken, pluginOptions }) => {
 	const { createNode } = actions
   const options = pluginOptions || defaultPluginOptions
 
-  console.log(`Fetch Greenhouse data`)
+  const fetchActivity = reporter.activityTimer(`Greenhouse: Fetch data)`, {
+    parentSpan
+  });
+  fetchActivity.start();
 
   console.log(`Starting to fetch data from Greenhouse`)
 
@@ -138,7 +141,7 @@ exports.sourceNodes = async ({ actions }, { apiToken, pluginOptions }) => {
 
   console.log(`jobPosts fetched`, jobPosts.length)
   console.log(`departments fetched`, departments.length)
-  return Promise.all(
+  const nodes = Promise.all(
     departments.map(async department => {
       const convertedDepartment = changeId(department)
       
@@ -165,4 +168,6 @@ exports.sourceNodes = async ({ actions }, { apiToken, pluginOptions }) => {
       createNode(departmentNode)
     })
   )
+  fetchActivity.end();
+  return nodes;
 }
