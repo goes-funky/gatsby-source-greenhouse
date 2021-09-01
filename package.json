@@ -6,7 +6,8 @@
   "scripts": {
     "build": "babel src --out-dir . --ignore apiTest.js",
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "prepare": "npm run snyk-protect",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -39,7 +40,8 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.6.0"
+    "babel-preset-env": "^1.6.0",
+    "jest": "^27.1.0"
   },
   "snyk": true
 }
